@@ -1,6 +1,6 @@
 // script.js
 
-const map = L.map('map').setView([0, 0], 2);
+const map = L.map('map', {worldCopyJump: true}).setView([0, 0], 2);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
     maxZoom: 5
@@ -25,7 +25,9 @@ function haversine(coord1, coord2) {
 }
 
 function calculateAntipode([lat, lon]) {
-    return [-lat, ((lon + 180) % 360) - 180];
+    const antiLat = -lat;
+    const antiLon = ((lon + 180 + 360) % 360) - 180;
+    return [antiLat, antiLon];
 }
 
 function setHome() {
@@ -62,24 +64,25 @@ function setHome() {
 
 function updateMap(homeCoords) {
     const antipodeCoords = calculateAntipode(homeCoords);
-    const midpoint = [
-        (homeCoords[0] + antipodeCoords[0]) / 2,
-        (homeCoords[1] + antipodeCoords[1]) / 2
-    ];
-    const distance = haversine(homeCoords, antipodeCoords);
-    const radius = distance / 2;
+    const distance = haversine(homeCoords, antipodeCoords); // Distance in meters
 
+    // Remove existing layers if they exist
     if (markerHome) map.removeLayer(markerHome);
     if (markerAntipode) map.removeLayer(markerAntipode);
     if (circleZone) map.removeLayer(circleZone);
 
+    // Add markers for home and antipode
     markerHome = L.marker(homeCoords).addTo(map).bindPopup("Home").openPopup();
     markerAntipode = L.marker(antipodeCoords).addTo(map).bindPopup("Antipode");
-    circleZone = L.circle(midpoint, {
-        radius: radius,
+
+    // Draw a geodesic circle centered on the antipode with a radius equal to the distance to the home location
+    circleZone = L.greatCircle(antipodeCoords, {
+        radius: distance,
         color: 'red',
         fillOpacity: 0.1
-    }).addTo(map).bindPopup("Furthest-from-home zone");
+    }).addTo(map).bindPopup("Zone equidistant from Home to Antipode");
 
+    // Adjust the map view to include both points
     map.fitBounds([homeCoords, antipodeCoords]);
 }
+
