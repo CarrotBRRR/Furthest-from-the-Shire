@@ -39,7 +39,7 @@ function drawGeodesicCircle(centerCoords, radiusMeters) {
         color: 'blue',
         fillColor: '#30f',
         fillOpacity: 0.2
-    }).addTo(map).bindPopup(`Radius: ${radiusKm.toFixed(2)} km`).openPopup();
+    }).addTo(map).bindPopup(`Radius: ${radiusKm.toFixed(2)} km`);
 }
 
 function haversine(coord1, coord2) {
