@@ -6,7 +6,7 @@ const map = L.map('map', {
     scrollWheelZoom: false,
     doubleClickZoom: false,
     dragging: false,
-
+    worldCopy: true,
 }).setView([0, 0], 2);
 
 // Add OpenStreetMap tile layer
@@ -39,7 +39,7 @@ function drawGeodesicCircle(centerCoords, radiusMeters) {
         color: 'blue',
         fillColor: '#30f',
         fillOpacity: 0.2
-    }).addTo(map).bindPopup(`Radius: ${radiusKm.toFixed(2)} km`);
+    }).addTo(map).bindPopup(`Radius: ${radiusKm.toFixed(2)} km`).openPopup();
 }
 
 function haversine(coord1, coord2) {
