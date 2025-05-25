@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Furthest From Home</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Furthest from the Shire</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map { height: 500px; width: 100%; }
+        #controls {
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
     <div id="controls">
-        <input type="text" id="locationInput" placeholder="Enter city or coordinates">
+        <input type="text" id="locationInput" placeholder="Enter city or coordinates" />
         <button id="setLocationBtn">Set Location</button>
         <span id="status"></span>
     </div>
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://nuclearsecrecy.github.io/Leaflet.greatCircle/Leaflet.greatCircle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
